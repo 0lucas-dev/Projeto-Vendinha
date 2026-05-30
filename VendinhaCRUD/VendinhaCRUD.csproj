@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>VendinhaCRUD</AssemblyName>
+    <RootNamespace>VendinhaCRUD</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- SQLite via ADO.NET - simples, sem precisar instalar servidor -->
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+  </ItemGroup>
+
+</Project>

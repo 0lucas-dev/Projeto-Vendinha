@@ -1,0 +1,17 @@
+## .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docobj
+
+## Banco de dados gerado em runtime (não vai para o repositório)
+*.db
+*.db-shm
+*.db-wal
+
+## Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
