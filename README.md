@@ -4,25 +4,25 @@ Trabalho acadêmico desenvolvido para a disciplina de **Desenvolvimento de Siste
 
 ---
 
-## 📋 Descrição
+##  Descrição
 
 Aplicação desktop desenvolvida em **C# com Windows Forms** para gerenciamento de clientes e controle de dívidas de uma vendinha. O sistema substitui o controle manual em papel, permitindo cadastrar clientes, registrar dívidas e acompanhar os pagamentos.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
-| Tecnologia | Versão | Finalidade |
-|------------|--------|-----------|
-| C# / .NET  | 8.0    | Linguagem e plataforma |
-| Windows Forms | - | Interface gráfica desktop |
-| SQLite | - | Banco de dados local (arquivo `.db`) |
-| ADO.NET | - | Acesso ao banco de dados |
-| System.Data.SQLite | 1.0.118 | Driver SQLite para .NET |
+| Tecnologia | Finalidade |
+|------------|-----------|
+| C# / .NET | Linguagem e plataforma |
+| Windows Forms | Interface gráfica desktop |
+| SQLite | Banco de dados local (arquivo `.db`) |
+| ADO.NET | Acesso ao banco de dados |
+| System.Data.SQLite | Driver SQLite para .NET |
 
 ---
 
-## 📁 Estrutura do Projeto
+##  Estrutura do Projeto
 
 ```
 VendinhaCRUD/
@@ -47,15 +47,7 @@ VendinhaCRUD/
 
 ---
 
-## ⚙️ Pré-requisitos
-
-- Windows 10 ou superior
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- Visual Studio 2022 **ou** VS Code com extensão C#
-
----
-
-## ▶️ Como Executar
+##  Como Executar
 
 ### Opção 1 – VScode
 
@@ -80,7 +72,7 @@ dotnet run
 
 ---
 
-## 🖥️ Funcionalidades
+##  Funcionalidades
 
 ### Clientes
 - ✅ Cadastrar cliente (nome, CPF, data de nascimento, e-mail)
@@ -106,7 +98,7 @@ dotnet run
 
 ---
 
-## 🗃️ Banco de Dados
+##  Banco de Dados
 
 O banco SQLite é criado automaticamente em `vendinha.db` na pasta de execução.
 
@@ -132,15 +124,7 @@ CREATE TABLE Dividas (
 
 ---
 
-## 👨‍💻 Autores
-
-- **Nome do Aluno** – RA: XXXXXXX
-- Curso: Análise e Desenvolvimento de Sistemas – 3º Termo
-- Disciplina: Desenvolvimento de Sistemas
-
----
-
-## 📝 Observações
+##  Observações
 
 - O banco de dados é um arquivo local (`vendinha.db`), não precisa de servidor.
 - O arquivo `.db` está no `.gitignore` e não é versionado.
