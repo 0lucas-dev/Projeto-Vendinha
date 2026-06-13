@@ -41,9 +41,9 @@ namespace VendinhaCRUD.Forms
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).BeginInit();
             this.pnlRodape.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pnlTopo
-            // 
+
+
+
             this.pnlTopo.Controls.Add(this.lblBusca);
             this.pnlTopo.Controls.Add(this.txtBusca);
             this.pnlTopo.Controls.Add(this.btnBuscar);
@@ -53,26 +53,26 @@ namespace VendinhaCRUD.Forms
             this.pnlTopo.Name = "pnlTopo";
             this.pnlTopo.Size = new System.Drawing.Size(904, 50);
             this.pnlTopo.TabIndex = 0;
-            // 
-            // lblBusca
-            // 
+
+
+
             this.lblBusca.AutoSize = true;
             this.lblBusca.Location = new System.Drawing.Point(10, 16);
             this.lblBusca.Name = "lblBusca";
             this.lblBusca.Size = new System.Drawing.Size(98, 15);
             this.lblBusca.TabIndex = 0;
             this.lblBusca.Text = "Buscar por nome:";
-            // 
-            // txtBusca
-            // 
+
+
+
             this.txtBusca.Location = new System.Drawing.Point(120, 13);
             this.txtBusca.Name = "txtBusca";
             this.txtBusca.Size = new System.Drawing.Size(280, 23);
             this.txtBusca.TabIndex = 1;
             this.txtBusca.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBusca_KeyDown);
-            // 
-            // btnBuscar
-            // 
+
+
+
             this.btnBuscar.Location = new System.Drawing.Point(410, 12);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(80, 25);
@@ -80,9 +80,9 @@ namespace VendinhaCRUD.Forms
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
-            // 
-            // btnNovo
-            // 
+
+
+
             this.btnNovo.BackColor = System.Drawing.Color.SeaGreen;
             this.btnNovo.ForeColor = System.Drawing.Color.White;
             this.btnNovo.Location = new System.Drawing.Point(500, 12);
@@ -92,9 +92,9 @@ namespace VendinhaCRUD.Forms
             this.btnNovo.Text = "Novo Cliente";
             this.btnNovo.UseVisualStyleBackColor = false;
             this.btnNovo.Click += new System.EventHandler(this.btnNovo_Click);
-            // 
-            // dgvClientes
-            // 
+
+
+
             this.dgvClientes.AllowUserToAddRows = false;
             this.dgvClientes.AllowUserToDeleteRows = false;
             this.dgvClientes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -117,51 +117,51 @@ namespace VendinhaCRUD.Forms
             this.dgvClientes.Size = new System.Drawing.Size(904, 441);
             this.dgvClientes.TabIndex = 1;
             this.dgvClientes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClientes_CellDoubleClick);
-            // 
-            // colId
-            // 
+
+
+
             this.colId.HeaderText = "ID";
             this.colId.Name = "colId";
             this.colId.ReadOnly = true;
             this.colId.Visible = false;
-            // 
-            // colNome
-            // 
+
+
+
             this.colNome.FillWeight = 30F;
             this.colNome.HeaderText = "Nome";
             this.colNome.Name = "colNome";
             this.colNome.ReadOnly = true;
-            // 
-            // colCpf
-            // 
+
+
+
             this.colCpf.FillWeight = 20F;
             this.colCpf.HeaderText = "CPF";
             this.colCpf.Name = "colCpf";
             this.colCpf.ReadOnly = true;
-            // 
-            // colEmail
-            // 
+
+
+
             this.colEmail.FillWeight = 25F;
             this.colEmail.HeaderText = "E-mail";
             this.colEmail.Name = "colEmail";
             this.colEmail.ReadOnly = true;
-            // 
-            // colIdade
-            // 
+
+
+
             this.colIdade.FillWeight = 10F;
             this.colIdade.HeaderText = "Idade";
             this.colIdade.Name = "colIdade";
             this.colIdade.ReadOnly = true;
-            // 
-            // colTotal
-            // 
+
+
+
             this.colTotal.FillWeight = 15F;
             this.colTotal.HeaderText = "Total em Aberto";
             this.colTotal.Name = "colTotal";
             this.colTotal.ReadOnly = true;
-            // 
-            // pnlRodape
-            // 
+
+
+
             this.pnlRodape.Controls.Add(this.btnEditar);
             this.pnlRodape.Controls.Add(this.btnExcluir);
             this.pnlRodape.Controls.Add(this.btnDividas);
@@ -174,9 +174,9 @@ namespace VendinhaCRUD.Forms
             this.pnlRodape.Name = "pnlRodape";
             this.pnlRodape.Size = new System.Drawing.Size(904, 50);
             this.pnlRodape.TabIndex = 2;
-            // 
-            // btnEditar
-            // 
+
+
+
             this.btnEditar.Location = new System.Drawing.Point(10, 12);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(90, 28);
@@ -184,9 +184,9 @@ namespace VendinhaCRUD.Forms
             this.btnEditar.Text = "Editar";
             this.btnEditar.UseVisualStyleBackColor = true;
             this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
-            // 
-            // btnExcluir
-            // 
+
+
+
             this.btnExcluir.Location = new System.Drawing.Point(110, 12);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(90, 28);
@@ -194,9 +194,9 @@ namespace VendinhaCRUD.Forms
             this.btnExcluir.Text = "Excluir";
             this.btnExcluir.UseVisualStyleBackColor = true;
             this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
-            // 
-            // btnDividas
-            // 
+
+
+
             this.btnDividas.BackColor = System.Drawing.Color.SteelBlue;
             this.btnDividas.ForeColor = System.Drawing.Color.White;
             this.btnDividas.Location = new System.Drawing.Point(210, 12);
@@ -206,18 +206,18 @@ namespace VendinhaCRUD.Forms
             this.btnDividas.Text = "Ver Dívidas";
             this.btnDividas.UseVisualStyleBackColor = false;
             this.btnDividas.Click += new System.EventHandler(this.btnDividas_Click);
-            // 
-            // lblInfo
-            // 
+
+
+
             this.lblInfo.AutoSize = true;
             this.lblInfo.ForeColor = System.Drawing.Color.Gray;
             this.lblInfo.Location = new System.Drawing.Point(340, 18);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(0, 15);
             this.lblInfo.TabIndex = 3;
-            // 
-            // btnAnterior
-            // 
+
+
+
             this.btnAnterior.Location = new System.Drawing.Point(574, 12);
             this.btnAnterior.Name = "btnAnterior";
             this.btnAnterior.Size = new System.Drawing.Size(100, 28);
@@ -225,18 +225,18 @@ namespace VendinhaCRUD.Forms
             this.btnAnterior.Text = "< Anterior";
             this.btnAnterior.UseVisualStyleBackColor = true;
             this.btnAnterior.Click += new System.EventHandler(this.btnAnterior_Click);
-            // 
-            // lblPagina
-            // 
+
+
+
             this.lblPagina.Location = new System.Drawing.Point(680, 18);
             this.lblPagina.Name = "lblPagina";
             this.lblPagina.Size = new System.Drawing.Size(100, 15);
             this.lblPagina.TabIndex = 5;
             this.lblPagina.Text = "Página 1/1";
             this.lblPagina.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnProximo
-            // 
+
+
+
             this.btnProximo.Location = new System.Drawing.Point(786, 12);
             this.btnProximo.Name = "btnProximo";
             this.btnProximo.Size = new System.Drawing.Size(100, 28);
@@ -244,9 +244,9 @@ namespace VendinhaCRUD.Forms
             this.btnProximo.Text = "Próximo >";
             this.btnProximo.UseVisualStyleBackColor = true;
             this.btnProximo.Click += new System.EventHandler(this.btnProximo_Click);
-            // 
-            // FrmPrincipal
-            // 
+
+
+
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(904, 541);

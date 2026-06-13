@@ -34,9 +34,9 @@ namespace VendinhaCRUD.Forms
             ((System.ComponentModel.ISupportInitialize)(this.dgvDividas)).BeginInit();
             this.pnlRodape.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pnlTopo
-            // 
+
+
+
             this.pnlTopo.Controls.Add(this.btnNovaDivida);
             this.pnlTopo.Controls.Add(this.btnMarcarPaga);
             this.pnlTopo.Controls.Add(this.btnExcluir);
@@ -46,18 +46,18 @@ namespace VendinhaCRUD.Forms
             this.pnlTopo.Name = "pnlTopo";
             this.pnlTopo.Size = new System.Drawing.Size(704, 50);
             this.pnlTopo.TabIndex = 0;
-            // 
-            // lblAvisoAberta
-            // 
+
+
+
             this.lblAvisoAberta.AutoSize = true;
             this.lblAvisoAberta.ForeColor = System.Drawing.Color.OrangeRed;
             this.lblAvisoAberta.Location = new System.Drawing.Point(440, 17);
             this.lblAvisoAberta.Name = "lblAvisoAberta";
             this.lblAvisoAberta.Size = new System.Drawing.Size(0, 15);
             this.lblAvisoAberta.TabIndex = 3;
-            // 
-            // btnNovaDivida
-            // 
+
+
+
             this.btnNovaDivida.BackColor = System.Drawing.Color.SeaGreen;
             this.btnNovaDivida.ForeColor = System.Drawing.Color.White;
             this.btnNovaDivida.Location = new System.Drawing.Point(10, 12);
@@ -67,9 +67,9 @@ namespace VendinhaCRUD.Forms
             this.btnNovaDivida.Text = "Nova Dívida";
             this.btnNovaDivida.UseVisualStyleBackColor = false;
             this.btnNovaDivida.Click += new System.EventHandler(this.btnNovaDivida_Click);
-            // 
-            // btnMarcarPaga
-            // 
+
+
+
             this.btnMarcarPaga.Location = new System.Drawing.Point(140, 12);
             this.btnMarcarPaga.Name = "btnMarcarPaga";
             this.btnMarcarPaga.Size = new System.Drawing.Size(150, 28);
@@ -77,9 +77,9 @@ namespace VendinhaCRUD.Forms
             this.btnMarcarPaga.Text = "Marcar como Paga";
             this.btnMarcarPaga.UseVisualStyleBackColor = true;
             this.btnMarcarPaga.Click += new System.EventHandler(this.btnMarcarPaga_Click);
-            // 
-            // btnExcluir
-            // 
+
+
+
             this.btnExcluir.Location = new System.Drawing.Point(300, 12);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(120, 28);
@@ -87,9 +87,9 @@ namespace VendinhaCRUD.Forms
             this.btnExcluir.Text = "Excluir Dívida";
             this.btnExcluir.UseVisualStyleBackColor = true;
             this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
-            // 
-            // dgvDividas
-            // 
+
+
+
             this.dgvDividas.AllowUserToAddRows = false;
             this.dgvDividas.AllowUserToDeleteRows = false;
             this.dgvDividas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -110,53 +110,53 @@ namespace VendinhaCRUD.Forms
             this.dgvDividas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDividas.Size = new System.Drawing.Size(704, 331);
             this.dgvDividas.TabIndex = 1;
-            // 
-            // colId
-            // 
+
+
+
             this.colId.HeaderText = "ID";
             this.colId.Name = "colId";
             this.colId.ReadOnly = true;
             this.colId.Visible = false;
-            // 
-            // colValor
-            // 
+
+
+
             this.colValor.FillWeight = 20F;
             this.colValor.HeaderText = "Valor";
             this.colValor.Name = "colValor";
             this.colValor.ReadOnly = true;
-            // 
-            // colStatus
-            // 
+
+
+
             this.colStatus.FillWeight = 20F;
             this.colStatus.HeaderText = "Situação";
             this.colStatus.Name = "colStatus";
             this.colStatus.ReadOnly = true;
-            // 
-            // colCriacao
-            // 
+
+
+
             this.colCriacao.FillWeight = 30F;
             this.colCriacao.HeaderText = "Data de Criação";
             this.colCriacao.Name = "colCriacao";
             this.colCriacao.ReadOnly = true;
-            // 
-            // colPagamento
-            // 
+
+
+
             this.colPagamento.FillWeight = 30F;
             this.colPagamento.HeaderText = "Data de Pagamento";
             this.colPagamento.Name = "colPagamento";
             this.colPagamento.ReadOnly = true;
-            // 
-            // pnlRodape
-            // 
+
+
+
             this.pnlRodape.Controls.Add(this.lblTotal);
             this.pnlRodape.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlRodape.Location = new System.Drawing.Point(0, 381);
             this.pnlRodape.Name = "pnlRodape";
             this.pnlRodape.Size = new System.Drawing.Size(704, 40);
             this.pnlRodape.TabIndex = 2;
-            // 
-            // lblTotal
-            // 
+
+
+
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotal.Location = new System.Drawing.Point(10, 12);
@@ -164,9 +164,9 @@ namespace VendinhaCRUD.Forms
             this.lblTotal.Size = new System.Drawing.Size(160, 19);
             this.lblTotal.TabIndex = 0;
             this.lblTotal.Text = "Total em aberto: R$ 0,00";
-            // 
-            // FrmDividas
-            // 
+
+
+
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(704, 421);

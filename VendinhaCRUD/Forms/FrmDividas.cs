@@ -47,7 +47,7 @@ namespace VendinhaCRUD.Forms
 
             bool temAberta = _dividaService.ClientePossuiDividaAberta(_clienteId);
             btnNovaDivida.Enabled = !temAberta;
-            lblAvisoAberta.Text = temAberta ? "⚠ Já existe uma dívida em aberto" : "";
+            lblAvisoAberta.Text = temAberta ? "Já existe uma dívida em aberto" : "";
         }
 
         private void btnNovaDivida_Click(object sender, EventArgs e)

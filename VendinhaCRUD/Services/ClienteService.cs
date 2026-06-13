@@ -6,11 +6,11 @@ using VendinhaCRUD.Models;
 
 namespace VendinhaCRUD.Services
 {
-    // Toda a lógica de banco de dados referente a Clientes fica aqui
+
     public class ClienteService
     {
-        // Retorna lista de clientes filtrada por nome, ordenada pelo maior devedor
-        // Paginação: page começa em 1, pageSize = 10
+
+
         public List<Cliente> Listar(string busca = "", int page = 1, int pageSize = 10)
         {
             var lista = new List<Cliente>();
@@ -45,7 +45,7 @@ namespace VendinhaCRUD.Services
             return lista;
         }
 
-        // Conta total de clientes (para paginação)
+
         public int ContarTotal(string busca = "")
         {
             string sql = "SELECT COUNT(*) FROM Clientes WHERE Nome LIKE @busca";
@@ -127,7 +127,7 @@ namespace VendinhaCRUD.Services
 
         public void Excluir(int id)
         {
-            // Remove dívidas primeiro (integridade referencial)
+
             using (var conn = DatabaseHelper.AbrirConexao())
             {
                 using (var cmd = new SQLiteCommand("DELETE FROM Dividas WHERE ClienteId = @id", conn))
@@ -155,7 +155,7 @@ namespace VendinhaCRUD.Services
                 Email = reader["Email"] == DBNull.Value ? "" : reader["Email"].ToString()
             };
 
-            // TotalDividas só existe na query de listagem, não na busca por Id
+
             try { c.TotalDividas = Convert.ToDecimal(reader["TotalDividas"]); }
             catch { c.TotalDividas = 0; }
 

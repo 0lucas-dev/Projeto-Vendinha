@@ -10,7 +10,7 @@ namespace VendinhaCRUD.Models
         public DateTime DataNascimento { get; set; }
         public string Email { get; set; }
 
-        // Calculada automaticamente a partir da data de nascimento
+
         public int Idade
         {
             get
@@ -22,7 +22,7 @@ namespace VendinhaCRUD.Models
             }
         }
 
-        public decimal TotalDividas { get; set; } // preenchido nas listagens
+        public decimal TotalDividas { get; set; }
 
         public override string ToString() => $"{Nome} (CPF: {CPF})";
     }

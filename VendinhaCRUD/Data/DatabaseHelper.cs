@@ -5,7 +5,7 @@ using System.IO;
 
 namespace VendinhaCRUD.Data
 {
-    // Responsável por criar/abrir o banco e fornecer a conexão para os outros serviços
+
     public static class DatabaseHelper
     {
         private static readonly string _dbPath = Path.Combine(

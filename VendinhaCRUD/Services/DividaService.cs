@@ -6,10 +6,10 @@ using VendinhaCRUD.Models;
 
 namespace VendinhaCRUD.Services
 {
-    // Toda a lógica de banco de dados referente a Dívidas fica aqui
+
     public class DividaService
     {
-        // Lista todas as dívidas de um cliente específico
+
         public List<Divida> ListarPorCliente(int clienteId)
         {
             var lista = new List<Divida>();
@@ -37,7 +37,7 @@ namespace VendinhaCRUD.Services
             return lista;
         }
 
-        // Verifica se o cliente já tem dívida em aberto (regra de negócio do PDF)
+
         public bool ClientePossuiDividaAberta(int clienteId)
         {
             string sql = "SELECT COUNT(*) FROM Dividas WHERE ClienteId = @clienteId AND Paga = 0";
@@ -80,7 +80,7 @@ namespace VendinhaCRUD.Services
             }
         }
 
-        // Marca a dívida como paga e registra a data de pagamento
+
         public void MarcarComoPaga(int dividaId)
         {
             string sql = @"UPDATE Dividas

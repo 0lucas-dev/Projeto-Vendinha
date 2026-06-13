@@ -30,71 +30,71 @@ namespace VendinhaCRUD.Forms
             this.btnSalvar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // lblNome
-            // 
+
+
+
             this.lblNome.AutoSize = true;
             this.lblNome.Location = new System.Drawing.Point(12, 23);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(95, 15);
             this.lblNome.TabIndex = 0;
             this.lblNome.Text = "Nome completo:";
-            // 
-            // txtNome
-            // 
+
+
+
             this.txtNome.Location = new System.Drawing.Point(150, 20);
             this.txtNome.MaxLength = 100;
             this.txtNome.Name = "txtNome";
             this.txtNome.Size = new System.Drawing.Size(240, 23);
             this.txtNome.TabIndex = 1;
-            // 
-            // lblCPF
-            // 
+
+
+
             this.lblCPF.AutoSize = true;
             this.lblCPF.Location = new System.Drawing.Point(12, 61);
             this.lblCPF.Name = "lblCPF";
             this.lblCPF.Size = new System.Drawing.Size(31, 15);
             this.lblCPF.TabIndex = 2;
             this.lblCPF.Text = "CPF:";
-            // 
-            // txtCPF
-            // 
+
+
+
             this.txtCPF.Location = new System.Drawing.Point(150, 58);
             this.txtCPF.MaxLength = 14;
             this.txtCPF.Name = "txtCPF";
             this.txtCPF.Size = new System.Drawing.Size(240, 23);
             this.txtCPF.TabIndex = 3;
             this.txtCPF.Leave += new System.EventHandler(this.txtCPF_Leave);
-            // 
-            // lblNascimento
-            // 
+
+
+
             this.lblNascimento.AutoSize = true;
             this.lblNascimento.Location = new System.Drawing.Point(12, 99);
             this.lblNascimento.Name = "lblNascimento";
             this.lblNascimento.Size = new System.Drawing.Size(118, 15);
             this.lblNascimento.TabIndex = 4;
             this.lblNascimento.Text = "Data de nascimento:";
-            // 
-            // dtpNascimento
-            // 
+
+
+
             this.dtpNascimento.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpNascimento.Location = new System.Drawing.Point(150, 96);
             this.dtpNascimento.Name = "dtpNascimento";
             this.dtpNascimento.Size = new System.Drawing.Size(240, 23);
             this.dtpNascimento.TabIndex = 5;
             this.dtpNascimento.ValueChanged += new System.EventHandler(this.dtpNascimento_ValueChanged);
-            // 
-            // lblIdade
-            // 
+
+
+
             this.lblIdade.AutoSize = true;
             this.lblIdade.Location = new System.Drawing.Point(12, 137);
             this.lblIdade.Name = "lblIdade";
             this.lblIdade.Size = new System.Drawing.Size(89, 15);
             this.lblIdade.TabIndex = 6;
             this.lblIdade.Text = "Idade calculada:";
-            // 
-            // lblIdadeValor
-            // 
+
+
+
             this.lblIdadeValor.AutoSize = true;
             this.lblIdadeValor.ForeColor = System.Drawing.Color.DimGray;
             this.lblIdadeValor.Location = new System.Drawing.Point(150, 137);
@@ -102,26 +102,26 @@ namespace VendinhaCRUD.Forms
             this.lblIdadeValor.Size = new System.Drawing.Size(42, 15);
             this.lblIdadeValor.TabIndex = 7;
             this.lblIdadeValor.Text = "- anos";
-            // 
-            // lblEmail
-            // 
+
+
+
             this.lblEmail.AutoSize = true;
             this.lblEmail.Location = new System.Drawing.Point(12, 175);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(43, 15);
             this.lblEmail.TabIndex = 8;
             this.lblEmail.Text = "E-mail:";
-            // 
-            // txtEmail
-            // 
+
+
+
             this.txtEmail.Location = new System.Drawing.Point(150, 172);
             this.txtEmail.MaxLength = 100;
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(240, 23);
             this.txtEmail.TabIndex = 9;
-            // 
-            // btnSalvar
-            // 
+
+
+
             this.btnSalvar.Location = new System.Drawing.Point(150, 215);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(100, 28);
@@ -129,9 +129,9 @@ namespace VendinhaCRUD.Forms
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
-            // 
-            // btnCancelar
-            // 
+
+
+
             this.btnCancelar.Location = new System.Drawing.Point(260, 215);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(100, 28);
@@ -139,9 +139,9 @@ namespace VendinhaCRUD.Forms
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
-            // FrmCadastroCliente
-            // 
+
+
+
             this.AcceptButton = this.btnSalvar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

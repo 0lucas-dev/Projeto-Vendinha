@@ -15,7 +15,7 @@ namespace VendinhaCRUD
 
             try
             {
-                // Cria o banco de dados e as tabelas caso ainda não existam
+
                 DatabaseHelper.InicializarBanco();
 
                 Application.Run(new FrmPrincipal());

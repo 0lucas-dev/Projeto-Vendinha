@@ -6,18 +6,18 @@ using VendinhaCRUD.Services;
 
 namespace VendinhaCRUD.Forms
 {
-    // Serve tanto para cadastrar novo cliente quanto para editar um existente
+
     public partial class FrmCadastroCliente : Form
     {
         private readonly ClienteService _clienteService = new ClienteService();
-        private readonly int _idEdicao; // 0 = novo cliente
+        private readonly int _idEdicao;
 
         public FrmCadastroCliente(int idEdicao = 0)
         {
             _idEdicao = idEdicao;
             InitializeComponent();
 
-            // Configurações que dependem da data atual (ficam fora do Designer)
+
             dtpNascimento.MaxDate = DateTime.Today;
             dtpNascimento.Value = DateTime.Today.AddYears(-18);
 

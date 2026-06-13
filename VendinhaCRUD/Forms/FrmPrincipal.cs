@@ -25,7 +25,7 @@ namespace VendinhaCRUD.Forms
             int totalPaginas = (int)Math.Ceiling((double)total / PageSize);
             if (totalPaginas == 0) totalPaginas = 1;
 
-            // Evita ficar em uma página vazia (ex: depois de excluir o último cliente da página)
+
             if (_paginaAtual > totalPaginas) _paginaAtual = totalPaginas;
 
             var clientes = _clienteService.Listar(_buscaAtual, _paginaAtual, PageSize);
