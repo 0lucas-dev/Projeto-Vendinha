@@ -46,14 +46,6 @@ VendinhaCRUD/
 └── Program.cs
 ```
 
-### Camadas e Responsabilidades
-
-| Camada       | Responsabilidade                                                                              |
-| ------------ | --------------------------------------------------------------------------------------------- |
-| **Models**   | Entidades de domínio com validação nativa via `Data Annotations`                              |
-| **Services** | Orquestração e Persistência: valida, aplica regras de negócio e executa comandos SQL no banco |
-| **Forms**    | Interface gráfica pura: exibe dados e captura input do usuário                                |
-
 ---
 
 ## Como Executar
