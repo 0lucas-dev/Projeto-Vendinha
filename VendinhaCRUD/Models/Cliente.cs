@@ -1,15 +1,22 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace VendinhaCRUD.Models
 {
     public class Cliente
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string CPF { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public string Email { get; set; }
 
+        [Required(ErrorMessage = "O nome completo é obrigatório.")]
+        public string Nome { get; set; }
+
+        [Required(ErrorMessage = "O CPF é obrigatório.")]
+        public string CPF { get; set; }
+
+        public DateTime DataNascimento { get; set; }
+
+        [EmailAddress(ErrorMessage = "E-mail informado não é válido.")]
+        public string Email { get; set; }
 
         public int Idade
         {

@@ -31,8 +31,6 @@ namespace VendinhaCRUD.Forms
             this.btnCancelar = new System.Windows.Forms.Button();
             this.SuspendLayout();
 
-
-
             this.lblNome.AutoSize = true;
             this.lblNome.Location = new System.Drawing.Point(12, 23);
             this.lblNome.Name = "lblNome";
@@ -40,15 +38,11 @@ namespace VendinhaCRUD.Forms
             this.lblNome.TabIndex = 0;
             this.lblNome.Text = "Nome completo:";
 
-
-
             this.txtNome.Location = new System.Drawing.Point(150, 20);
             this.txtNome.MaxLength = 100;
             this.txtNome.Name = "txtNome";
             this.txtNome.Size = new System.Drawing.Size(240, 23);
             this.txtNome.TabIndex = 1;
-
-
 
             this.lblCPF.AutoSize = true;
             this.lblCPF.Location = new System.Drawing.Point(12, 61);
@@ -57,16 +51,12 @@ namespace VendinhaCRUD.Forms
             this.lblCPF.TabIndex = 2;
             this.lblCPF.Text = "CPF:";
 
-
-
             this.txtCPF.Location = new System.Drawing.Point(150, 58);
             this.txtCPF.MaxLength = 14;
             this.txtCPF.Name = "txtCPF";
             this.txtCPF.Size = new System.Drawing.Size(240, 23);
             this.txtCPF.TabIndex = 3;
             this.txtCPF.Leave += new System.EventHandler(this.txtCPF_Leave);
-
-
 
             this.lblNascimento.AutoSize = true;
             this.lblNascimento.Location = new System.Drawing.Point(12, 99);
@@ -75,8 +65,6 @@ namespace VendinhaCRUD.Forms
             this.lblNascimento.TabIndex = 4;
             this.lblNascimento.Text = "Data de nascimento:";
 
-
-
             this.dtpNascimento.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpNascimento.Location = new System.Drawing.Point(150, 96);
             this.dtpNascimento.Name = "dtpNascimento";
@@ -84,16 +72,12 @@ namespace VendinhaCRUD.Forms
             this.dtpNascimento.TabIndex = 5;
             this.dtpNascimento.ValueChanged += new System.EventHandler(this.dtpNascimento_ValueChanged);
 
-
-
             this.lblIdade.AutoSize = true;
             this.lblIdade.Location = new System.Drawing.Point(12, 137);
             this.lblIdade.Name = "lblIdade";
             this.lblIdade.Size = new System.Drawing.Size(89, 15);
             this.lblIdade.TabIndex = 6;
             this.lblIdade.Text = "Idade calculada:";
-
-
 
             this.lblIdadeValor.AutoSize = true;
             this.lblIdadeValor.ForeColor = System.Drawing.Color.DimGray;
@@ -103,8 +87,6 @@ namespace VendinhaCRUD.Forms
             this.lblIdadeValor.TabIndex = 7;
             this.lblIdadeValor.Text = "- anos";
 
-
-
             this.lblEmail.AutoSize = true;
             this.lblEmail.Location = new System.Drawing.Point(12, 175);
             this.lblEmail.Name = "lblEmail";
@@ -112,15 +94,11 @@ namespace VendinhaCRUD.Forms
             this.lblEmail.TabIndex = 8;
             this.lblEmail.Text = "E-mail:";
 
-
-
             this.txtEmail.Location = new System.Drawing.Point(150, 172);
             this.txtEmail.MaxLength = 100;
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(240, 23);
             this.txtEmail.TabIndex = 9;
-
-
 
             this.btnSalvar.Location = new System.Drawing.Point(150, 215);
             this.btnSalvar.Name = "btnSalvar";
@@ -130,8 +108,6 @@ namespace VendinhaCRUD.Forms
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
 
-
-
             this.btnCancelar.Location = new System.Drawing.Point(260, 215);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(100, 28);
@@ -139,8 +115,6 @@ namespace VendinhaCRUD.Forms
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-
-
 
             this.AcceptButton = this.btnSalvar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);

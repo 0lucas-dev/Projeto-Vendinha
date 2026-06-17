@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using VendinhaCRUD.Data;
 using VendinhaCRUD.Forms;
+using VendinhaCRUD.Services;
 
 namespace VendinhaCRUD
 {
@@ -15,10 +16,12 @@ namespace VendinhaCRUD
 
             try
             {
-
                 DatabaseHelper.InicializarBanco();
 
-                Application.Run(new FrmPrincipal());
+                var clienteService = new ClienteService();
+                var dividaService = new DividaService();
+
+                Application.Run(new FrmPrincipal(clienteService, dividaService));
             }
             catch (Exception ex)
             {

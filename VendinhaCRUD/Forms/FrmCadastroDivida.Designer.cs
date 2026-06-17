@@ -24,8 +24,6 @@ namespace VendinhaCRUD.Forms
             this.btnCancelar = new System.Windows.Forms.Button();
             this.SuspendLayout();
 
-
-
             this.lblValor.AutoSize = true;
             this.lblValor.Location = new System.Drawing.Point(12, 22);
             this.lblValor.Name = "lblValor";
@@ -33,14 +31,10 @@ namespace VendinhaCRUD.Forms
             this.lblValor.TabIndex = 0;
             this.lblValor.Text = "Valor da dívida (R$):";
 
-
-
             this.txtValor.Location = new System.Drawing.Point(160, 19);
             this.txtValor.Name = "txtValor";
             this.txtValor.Size = new System.Drawing.Size(130, 23);
             this.txtValor.TabIndex = 1;
-
-
 
             this.lblAviso.AutoSize = true;
             this.lblAviso.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -51,8 +45,6 @@ namespace VendinhaCRUD.Forms
             this.lblAviso.TabIndex = 2;
             this.lblAviso.Text = "A data de criação será registrada\r\nautomaticamente pelo sistema.";
 
-
-
             this.btnSalvar.Location = new System.Drawing.Point(70, 110);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(90, 28);
@@ -61,8 +53,6 @@ namespace VendinhaCRUD.Forms
             this.btnSalvar.UseVisualStyleBackColor = true;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
 
-
-
             this.btnCancelar.Location = new System.Drawing.Point(170, 110);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(90, 28);
@@ -70,8 +60,6 @@ namespace VendinhaCRUD.Forms
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-
-
 
             this.AcceptButton = this.btnSalvar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);

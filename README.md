@@ -4,50 +4,59 @@ Trabalho acadêmico desenvolvido para a disciplina de **Desenvolvimento de Siste
 
 ---
 
-##  Descrição
+## Descrição
 
 Aplicação desktop desenvolvida em **C# com Windows Forms** para gerenciamento de clientes e controle de dívidas de uma vendinha. O sistema substitui o controle manual em papel, permitindo cadastrar clientes, registrar dívidas e acompanhar os pagamentos.
 
 ---
 
-##  Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
-| Tecnologia | Finalidade |
-|------------|-----------|
-| C# / .NET | Linguagem e plataforma |
-| Windows Forms | Interface gráfica desktop |
-| SQLite | Banco de dados local (arquivo `.db`) |
-| ADO.NET | Acesso ao banco de dados |
-| System.Data.SQLite | Driver SQLite para .NET |
+| Tecnologia         | Finalidade                           |
+| ------------------ | ------------------------------------ |
+| C# / .NET 8        | Linguagem e plataforma               |
+| Windows Forms      | Interface gráfica desktop            |
+| SQLite             | Banco de dados local (arquivo `.db`) |
+| ADO.NET            | Acesso ao banco de dados             |
+| System.Data.SQLite | Driver SQLite para .NET              |
 
 ---
 
-##  Estrutura do Projeto
+## Arquitetura do Projeto
+
+O projeto segue uma arquitetura em camadas com separação clara de responsabilidades:
 
 ```
 VendinhaCRUD/
 ├── Models/
-│   ├── Cliente.cs       → Entidade Cliente (dados + cálculo de idade)
-│   └── Divida.cs        → Entidade Dívida
-├── Data/
-│   ├── DatabaseHelper.cs → Conexão e criação do banco
-│   └── schema.sql        → Script SQL de referência
+│   ├── Cliente.cs
+│   └── Divida.cs
 ├── Services/
-│   ├── ClienteService.cs → CRUD de clientes (banco de dados)
-│   ├── DividaService.cs  → CRUD de dívidas (banco de dados)
-│   └── CpfHelper.cs      → Validação e formatação de CPF
+│   ├── ClienteService.cs
+│   ├── DividaService.cs
+│   └── CpfHelper.cs
+├── Data/
+│   ├── DatabaseHelper.cs
+│   └── schema.sql
 ├── Forms/
-│   ├── FrmPrincipal.cs       → Tela principal (listagem + busca + paginação)
-│   ├── FrmCadastroCliente.cs → Cadastro e edição de clientes
-│   ├── FrmDividas.cs         → Listagem de dívidas do cliente
-│   └── FrmCadastroDivida.cs  → Cadastro de nova dívida
-├── Program.cs           → Ponto de entrada da aplicação
-└── VendinhaCRUD.csproj  → Arquivo do projeto
+│   ├── FrmPrincipal.cs
+│   ├── FrmCadastroCliente.cs
+│   ├── FrmDividas.cs
+│   └── FrmCadastroDivida.cs
+└── Program.cs
 ```
+
+### Camadas e Responsabilidades
+
+| Camada       | Responsabilidade                                                                              |
+| ------------ | --------------------------------------------------------------------------------------------- |
+| **Models**   | Entidades de domínio com validação nativa via `Data Annotations`                              |
+| **Services** | Orquestração e Persistência: valida, aplica regras de negócio e executa comandos SQL no banco |
+| **Forms**    | Interface gráfica pura: exibe dados e captura input do usuário                                |
 
 ---
 
-##  Como Executar
+## Como Executar
 
 ### Opção 1 – VScode
 
@@ -55,50 +64,40 @@ VendinhaCRUD/
 2. Aguarde o Visual Studio restaurar os pacotes NuGet automaticamente
 3. Pressione **F5** para executar
 
-### Opção 2 – Linha de comando
-
-```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/VendinhaCRUD.git
-cd VendinhaCRUD
-
-# Restaure os pacotes e execute
-cd VendinhaCRUD
-dotnet restore
-dotnet run
-```
-
 > O banco de dados `vendinha.db` é criado automaticamente na primeira execução. Não é necessário instalar nenhum servidor de banco de dados.
 
 ---
 
-##  Funcionalidades
+## Funcionalidades
 
 ### Clientes
-- ✅ Cadastrar cliente (nome, CPF, data de nascimento, e-mail)
-- ✅ Editar dados do cliente
-- ✅ Excluir cliente (remove as dívidas junto)
-- ✅ Buscar por nome (filtro de texto)
-- ✅ Listar ordenado do maior devedor para o menor
-- ✅ Paginação (10 clientes por página)
-- ✅ Idade calculada automaticamente pela data de nascimento
+
+- Cadastrar cliente (nome, CPF, data de nascimento, e-mail)
+- Editar dados do cliente
+- Excluir cliente (remove as dívidas junto)
+- Buscar por nome (filtro de texto)
+- Listar ordenado do maior devedor para o menor
+- Paginação (10 clientes por página)
+- Idade calculada automaticamente pela data de nascimento
 
 ### Dívidas
-- ✅ Cadastrar dívida para um cliente
-- ✅ Visualizar todas as dívidas do cliente
-- ✅ Marcar dívida como paga (registra data de pagamento)
-- ✅ Excluir dívida
-- ✅ Total em aberto exibido na tela
+
+- Cadastrar dívida para um cliente
+- Visualizar todas as dívidas do cliente
+- Marcar dívida como paga (registra data de pagamento)
+- Excluir dívida
+- Total em aberto exibido na tela
 
 ### Regras de Negócio
-- ✅ CPF deve ser válido (algoritmo da Receita Federal)
-- ✅ Não é permitido dois clientes com o mesmo CPF
-- ✅ Um cliente só pode ter **uma dívida em aberto** por vez
-- ✅ E-mail validado quando informado
+
+- CPF deve ser válido (algoritmo da Receita Federal)
+- Não é permitido dois clientes com o mesmo CPF
+- Um cliente só pode ter **uma dívida em aberto** por vez
+- E-mail validado quando informado
 
 ---
 
-##  Banco de Dados
+## Banco de Dados
 
 O banco SQLite é criado automaticamente em `vendinha.db` na pasta de execução.
 
@@ -124,8 +123,8 @@ CREATE TABLE Dividas (
 
 ---
 
-##  Observações
+## Observações
 
 - O banco de dados é um arquivo local (`vendinha.db`), não precisa de servidor.
 - O arquivo `.db` está no `.gitignore` e não é versionado.
-- O projeto foi desenvolvido com foco em clareza e simplicidade, seguindo os conceitos de POO ensinados em aula.
+- O projeto adota uma **arquitetura enxuta e direta**, priorizando a simplicidade, facilidade de manutenção e evitando excesso de engenharia.

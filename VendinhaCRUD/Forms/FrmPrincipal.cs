@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using VendinhaCRUD.Services;
 
@@ -7,14 +6,17 @@ namespace VendinhaCRUD.Forms
 {
     public partial class FrmPrincipal : Form
     {
-        private readonly ClienteService _clienteService = new ClienteService();
+        private readonly ClienteService _clienteService;
+        private readonly DividaService _dividaService;
 
         private int _paginaAtual = 1;
         private const int PageSize = 10;
         private string _buscaAtual = "";
 
-        public FrmPrincipal()
+        public FrmPrincipal(ClienteService clienteService, DividaService dividaService)
         {
+            _clienteService = clienteService;
+            _dividaService = dividaService;
             InitializeComponent();
             CarregarClientes();
         }
@@ -22,9 +24,7 @@ namespace VendinhaCRUD.Forms
         private void CarregarClientes()
         {
             int total = _clienteService.ContarTotal(_buscaAtual);
-            int totalPaginas = (int)Math.Ceiling((double)total / PageSize);
-            if (totalPaginas == 0) totalPaginas = 1;
-
+            int totalPaginas = Math.Max(1, (int)Math.Ceiling((double)total / PageSize));
 
             if (_paginaAtual > totalPaginas) _paginaAtual = totalPaginas;
 
@@ -66,7 +66,7 @@ namespace VendinhaCRUD.Forms
 
         private void btnNovo_Click(object sender, EventArgs e)
         {
-            using (var frm = new FrmCadastroCliente())
+            using (var frm = new FrmCadastroCliente(_clienteService))
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                     CarregarClientes();
@@ -78,7 +78,7 @@ namespace VendinhaCRUD.Forms
             int id = ObterIdSelecionado();
             if (id == 0) return;
 
-            using (var frm = new FrmCadastroCliente(id))
+            using (var frm = new FrmCadastroCliente(_clienteService, id))
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                     CarregarClientes();
@@ -112,7 +112,7 @@ namespace VendinhaCRUD.Forms
             if (id == 0) return;
 
             string nome = dgvClientes.CurrentRow.Cells["colNome"].Value.ToString();
-            using (var frm = new FrmDividas(id, nome))
+            using (var frm = new FrmDividas(_dividaService, id, nome))
             {
                 frm.ShowDialog();
                 CarregarClientes();

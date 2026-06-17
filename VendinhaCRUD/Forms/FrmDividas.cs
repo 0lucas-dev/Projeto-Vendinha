@@ -7,11 +7,12 @@ namespace VendinhaCRUD.Forms
 {
     public partial class FrmDividas : Form
     {
-        private readonly DividaService _dividaService = new DividaService();
+        private readonly DividaService _dividaService;
         private readonly int _clienteId;
 
-        public FrmDividas(int clienteId, string clienteNome)
+        public FrmDividas(DividaService dividaService, int clienteId, string clienteNome)
         {
+            _dividaService = dividaService;
             _clienteId = clienteId;
             InitializeComponent();
             this.Text = $"Dívidas – {clienteNome}";
@@ -23,8 +24,6 @@ namespace VendinhaCRUD.Forms
             var dividas = _dividaService.ListarPorCliente(_clienteId);
 
             dgvDividas.Rows.Clear();
-
-            decimal totalAberto = 0;
 
             foreach (var d in dividas)
             {
@@ -38,11 +37,9 @@ namespace VendinhaCRUD.Forms
 
                 if (d.Paga)
                     dgvDividas.Rows[idx].DefaultCellStyle.ForeColor = Color.Gray;
-
-                if (!d.Paga)
-                    totalAberto += d.Valor;
             }
 
+            decimal totalAberto = _dividaService.CalcularTotalAberto(_clienteId);
             lblTotal.Text = $"Total em aberto: {totalAberto:C2}";
 
             bool temAberta = _dividaService.ClientePossuiDividaAberta(_clienteId);
@@ -52,7 +49,7 @@ namespace VendinhaCRUD.Forms
 
         private void btnNovaDivida_Click(object sender, EventArgs e)
         {
-            using (var frm = new FrmCadastroDivida(_clienteId))
+            using (var frm = new FrmCadastroDivida(_dividaService, _clienteId))
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                     CarregarDividas();

@@ -8,11 +8,12 @@ namespace VendinhaCRUD.Forms
 {
     public partial class FrmCadastroDivida : Form
     {
-        private readonly DividaService _dividaService = new DividaService();
+        private readonly DividaService _dividaService;
         private readonly int _clienteId;
 
-        public FrmCadastroDivida(int clienteId)
+        public FrmCadastroDivida(DividaService dividaService, int clienteId)
         {
+            _dividaService = dividaService;
             _clienteId = clienteId;
             InitializeComponent();
         }
@@ -21,9 +22,9 @@ namespace VendinhaCRUD.Forms
         {
             string textoValor = txtValor.Text.Trim().Replace(",", ".");
 
-            if (!decimal.TryParse(textoValor, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal valor) || valor <= 0)
+            if (!decimal.TryParse(textoValor, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal valor))
             {
-                MessageBox.Show("Informe um valor válido maior que zero.", "Validação",
+                MessageBox.Show("Informe um valor numérico válido.", "Validação",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtValor.Focus();
                 return;
@@ -36,7 +37,12 @@ namespace VendinhaCRUD.Forms
                 DataCriacao = DateTime.Now
             };
 
-            _dividaService.Inserir(divida);
+            string erro = _dividaService.Inserir(divida);
+            if (erro != "")
+            {
+                MessageBox.Show(erro, "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             this.DialogResult = DialogResult.OK;
             this.Close();

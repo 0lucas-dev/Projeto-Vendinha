@@ -1,22 +1,20 @@
 using System;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using VendinhaCRUD.Models;
 using VendinhaCRUD.Services;
 
 namespace VendinhaCRUD.Forms
 {
-
     public partial class FrmCadastroCliente : Form
     {
-        private readonly ClienteService _clienteService = new ClienteService();
+        private readonly ClienteService _clienteService;
         private readonly int _idEdicao;
 
-        public FrmCadastroCliente(int idEdicao = 0)
+        public FrmCadastroCliente(ClienteService clienteService, int idEdicao = 0)
         {
+            _clienteService = clienteService;
             _idEdicao = idEdicao;
             InitializeComponent();
-
 
             dtpNascimento.MaxDate = DateTime.Today;
             dtpNascimento.Value = DateTime.Today.AddYears(-18);
@@ -47,9 +45,7 @@ namespace VendinhaCRUD.Forms
         }
 
         private void dtpNascimento_ValueChanged(object sender, EventArgs e)
-        {
-            AtualizarIdade();
-        }
+            => AtualizarIdade();
 
         private void txtCPF_Leave(object sender, EventArgs e)
         {
@@ -60,8 +56,6 @@ namespace VendinhaCRUD.Forms
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            if (!ValidarCampos()) return;
-
             var cliente = new Cliente
             {
                 Id = _idEdicao,
@@ -71,49 +65,18 @@ namespace VendinhaCRUD.Forms
                 Email = txtEmail.Text.Trim()
             };
 
-            if (_idEdicao == 0)
-                _clienteService.Inserir(cliente);
-            else
-                _clienteService.Atualizar(cliente);
+            string erro = _idEdicao == 0
+                ? _clienteService.Inserir(cliente)
+                : _clienteService.Atualizar(cliente);
+
+            if (erro != "")
+            {
+                MessageBox.Show(erro, "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             this.DialogResult = DialogResult.OK;
             this.Close();
-        }
-
-        private bool ValidarCampos()
-        {
-            if (string.IsNullOrWhiteSpace(txtNome.Text))
-            {
-                MostrarErro("O nome completo é obrigatório.", txtNome); return false;
-            }
-
-            string cpfLimpo = CpfHelper.Limpar(txtCPF.Text);
-            if (string.IsNullOrEmpty(cpfLimpo))
-            {
-                MostrarErro("O CPF é obrigatório.", txtCPF); return false;
-            }
-            if (!CpfHelper.Valido(cpfLimpo))
-            {
-                MostrarErro("CPF inválido. Verifique o número informado.", txtCPF); return false;
-            }
-            if (_clienteService.CPFJaCadastrado(cpfLimpo, _idEdicao))
-            {
-                MostrarErro("Este CPF já está cadastrado para outro cliente.", txtCPF); return false;
-            }
-
-            string email = txtEmail.Text.Trim();
-            if (!string.IsNullOrEmpty(email) && !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-            {
-                MostrarErro("E-mail informado não é válido.", txtEmail); return false;
-            }
-
-            return true;
-        }
-
-        private void MostrarErro(string mensagem, System.Windows.Forms.Control campo)
-        {
-            MessageBox.Show(mensagem, "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            campo.Focus();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

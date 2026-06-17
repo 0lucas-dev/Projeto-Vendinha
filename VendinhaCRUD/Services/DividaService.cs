@@ -6,19 +6,15 @@ using VendinhaCRUD.Models;
 
 namespace VendinhaCRUD.Services
 {
-
     public class DividaService
     {
-
         public List<Divida> ListarPorCliente(int clienteId)
         {
             var lista = new List<Divida>();
 
             string sql = @"
-                SELECT d.Id, d.ClienteId, c.Nome AS ClienteNome,
-                       d.Valor, d.Paga, d.DataCriacao, d.DataPagamento
+                SELECT d.Id, d.ClienteId, d.Valor, d.Paga, d.DataCriacao, d.DataPagamento
                 FROM Dividas d
-                INNER JOIN Clientes c ON c.Id = d.ClienteId
                 WHERE d.ClienteId = @clienteId
                 ORDER BY d.Paga ASC, d.DataCriacao DESC";
 
@@ -37,6 +33,17 @@ namespace VendinhaCRUD.Services
             return lista;
         }
 
+        public decimal CalcularTotalAberto(int clienteId)
+        {
+            string sql = "SELECT TOTAL(Valor) FROM Dividas WHERE ClienteId = @clienteId AND Paga = 0";
+
+            using (var conn = DatabaseHelper.AbrirConexao())
+            using (var cmd = new SQLiteCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@clienteId", clienteId);
+                return Convert.ToDecimal(cmd.ExecuteScalar());
+            }
+        }
 
         public bool ClientePossuiDividaAberta(int clienteId)
         {
@@ -50,36 +57,28 @@ namespace VendinhaCRUD.Services
             }
         }
 
-        public void Inserir(Divida d)
+        public string Inserir(Divida divida)
         {
+            if (divida.Valor <= 0)
+                return "Informe um valor válido maior que zero.";
+
+            if (ClientePossuiDividaAberta(divida.ClienteId))
+                return "Este cliente já possui uma dívida em aberto.";
+
             string sql = @"INSERT INTO Dividas (ClienteId, Valor, Paga, DataCriacao, DataPagamento)
                            VALUES (@clienteId, @valor, 0, @dataCriacao, NULL)";
 
             using (var conn = DatabaseHelper.AbrirConexao())
             using (var cmd = new SQLiteCommand(sql, conn))
             {
-                cmd.Parameters.AddWithValue("@clienteId", d.ClienteId);
-                cmd.Parameters.AddWithValue("@valor", d.Valor);
-                cmd.Parameters.AddWithValue("@dataCriacao", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@clienteId", divida.ClienteId);
+                cmd.Parameters.AddWithValue("@valor", divida.Valor);
+                cmd.Parameters.AddWithValue("@dataCriacao", DateTime.Now);
                 cmd.ExecuteNonQuery();
             }
+
+            return "";
         }
-
-        public void Atualizar(Divida d)
-        {
-            string sql = @"UPDATE Dividas
-                           SET Valor = @valor
-                           WHERE Id = @id AND Paga = 0";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@valor", d.Valor);
-                cmd.Parameters.AddWithValue("@id", d.Id);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
 
         public void MarcarComoPaga(int dividaId)
         {
@@ -90,7 +89,7 @@ namespace VendinhaCRUD.Services
             using (var conn = DatabaseHelper.AbrirConexao())
             using (var cmd = new SQLiteCommand(sql, conn))
             {
-                cmd.Parameters.AddWithValue("@dataPgto", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@dataPgto", DateTime.Now);
                 cmd.Parameters.AddWithValue("@id", dividaId);
                 cmd.ExecuteNonQuery();
             }
@@ -108,17 +107,16 @@ namespace VendinhaCRUD.Services
             }
         }
 
-        private Divida MapearDivida(SQLiteDataReader reader)
+        private static Divida MapearDivida(SQLiteDataReader reader)
         {
             return new Divida
             {
                 Id = Convert.ToInt32(reader["Id"]),
                 ClienteId = Convert.ToInt32(reader["ClienteId"]),
-                ClienteNome = reader["ClienteNome"].ToString(),
                 Valor = Convert.ToDecimal(reader["Valor"]),
                 Paga = Convert.ToInt32(reader["Paga"]) == 1,
-                DataCriacao = DateTime.Parse(reader["DataCriacao"].ToString()),
-                DataPagamento = reader["DataPagamento"] == DBNull.Value
+                DataCriacao = Convert.ToDateTime(reader["DataCriacao"]),
+                DataPagamento = reader["DataPagamento"] == System.DBNull.Value
                     ? (DateTime?)null
                     : DateTime.Parse(reader["DataPagamento"].ToString())
             };
