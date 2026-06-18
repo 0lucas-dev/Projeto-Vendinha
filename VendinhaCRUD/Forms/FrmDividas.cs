@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using VendinhaCRUD.Services;
 
@@ -39,7 +40,7 @@ namespace VendinhaCRUD.Forms
                     dgvDividas.Rows[idx].DefaultCellStyle.ForeColor = Color.Gray;
             }
 
-            decimal totalAberto = _dividaService.CalcularTotalAberto(_clienteId);
+            decimal totalAberto = dividas.Where(d => !d.Paga).Sum(d => d.Valor);
             lblTotal.Text = $"Total em aberto: {totalAberto:C2}";
 
             bool temAberta = _dividaService.ClientePossuiDividaAberta(_clienteId);

@@ -33,18 +33,6 @@ namespace VendinhaCRUD.Services
             return lista;
         }
 
-        public decimal CalcularTotalAberto(int clienteId)
-        {
-            string sql = "SELECT TOTAL(Valor) FROM Dividas WHERE ClienteId = @clienteId AND Paga = 0";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@clienteId", clienteId);
-                return Convert.ToDecimal(cmd.ExecuteScalar());
-            }
-        }
-
         public bool ClientePossuiDividaAberta(int clienteId)
         {
             string sql = "SELECT COUNT(*) FROM Dividas WHERE ClienteId = @clienteId AND Paga = 0";
