@@ -1,113 +1,115 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
-using VendinhaCRUD.Data;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using VendinhaCRUD.Models;
 
 namespace VendinhaCRUD.Services
 {
     public class DividaService
     {
+        private List<Divida> list = new List<Divida>();
+        private int contador = 1;
+
         public List<Divida> ListarPorCliente(int clienteId)
         {
-            var lista = new List<Divida>();
-
-            string sql = @"
-                SELECT d.Id, d.ClienteId, d.Valor, d.Paga, d.DataCriacao, d.DataPagamento
-                FROM Dividas d
-                WHERE d.ClienteId = @clienteId
-                ORDER BY d.Paga ASC, d.DataCriacao DESC";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@clienteId", clienteId);
-
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                        lista.Add(MapearDivida(reader));
-                }
-            }
-
-            return lista;
+            var resultado = list.Where(d => d.ClienteId == clienteId).OrderBy(d => d.Paga).ThenByDescending(d => d.DataCriacao).ToList();
+            return resultado;
         }
 
         public bool ClientePossuiDividaAberta(int clienteId)
         {
-            string sql = "SELECT COUNT(*) FROM Dividas WHERE ClienteId = @clienteId AND Paga = 0";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@clienteId", clienteId);
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
-            }
+            return list.Any(d => d.ClienteId == clienteId && !d.Paga);
         }
 
-        public string Inserir(Divida divida)
+        public Divida BuscarPorId(int dividaId)
         {
-            if (divida.Valor <= 0)
-                return "Informe um valor válido maior que zero.";
-
-            if (ClientePossuiDividaAberta(divida.ClienteId))
-                return "Este cliente já possui uma dívida em aberto.";
-
-            string sql = @"INSERT INTO Dividas (ClienteId, Valor, Paga, DataCriacao, DataPagamento)
-                           VALUES (@clienteId, @valor, 0, @dataCriacao, NULL)";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@clienteId", divida.ClienteId);
-                cmd.Parameters.AddWithValue("@valor", divida.Valor);
-                cmd.Parameters.AddWithValue("@dataCriacao", DateTime.Now);
-                cmd.ExecuteNonQuery();
-            }
-
-            return "";
+            var divida = list.FirstOrDefault(
+                (item) => item.Id == dividaId
+            );
+            return divida;
         }
 
-        public void MarcarComoPaga(int dividaId)
+        public bool Criar(Divida divida, out List<ValidationResult> erros)
         {
-            string sql = @"UPDATE Dividas
-                           SET Paga = 1, DataPagamento = @dataPgto
-                           WHERE Id = @id";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
+            if (!Validar(divida, out erros))
             {
-                cmd.Parameters.AddWithValue("@dataPgto", DateTime.Now);
-                cmd.Parameters.AddWithValue("@id", dividaId);
-                cmd.ExecuteNonQuery();
+                return false;
             }
+
+            divida.Id = contador++;
+            divida.Paga = false;
+            divida.DataCriacao = DateTime.Now;
+            divida.DataPagamento = null;
+            
+            list.Add(divida);
+            return true;
+        }
+
+        public bool MarcarComoPaga(int dividaId, out List<ValidationResult> erros)
+        {
+            erros = new List<ValidationResult>();
+            var divida = BuscarPorId(dividaId);
+
+            if (divida == null)
+            {
+                erros.Add(new ValidationResult("Dívida não encontrada.", new[] { "Id" }));
+                return false;
+            }
+
+            if (divida.Paga)
+            {
+                erros.Add(new ValidationResult("Esta dívida já está paga.", new[] { "Paga" }));
+                return false;
+            }
+
+            divida.Paga = true;
+            divida.DataPagamento = DateTime.Now;
+
+            return true;
         }
 
         public void Excluir(int dividaId)
         {
-            string sql = "DELETE FROM Dividas WHERE Id = @id";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
+            var divida = BuscarPorId(dividaId);
+            if (divida != null)
             {
-                cmd.Parameters.AddWithValue("@id", dividaId);
-                cmd.ExecuteNonQuery();
+                list.Remove(divida);
             }
         }
 
-        private static Divida MapearDivida(SQLiteDataReader reader)
+        public bool Validar(Divida a, out List<ValidationResult> erros)
         {
-            return new Divida
+            var contexto = new ValidationContext(a);
+            erros = new List<ValidationResult>();
+            var objetoValido = Validator.
+                    TryValidateObject(
+                        a,
+                        contexto,
+                        erros,
+                        true
+                    );
+
+            if (a.Valor <= 0)
             {
-                Id = Convert.ToInt32(reader["Id"]),
-                ClienteId = Convert.ToInt32(reader["ClienteId"]),
-                Valor = Convert.ToDecimal(reader["Valor"]),
-                Paga = Convert.ToInt32(reader["Paga"]) == 1,
-                DataCriacao = Convert.ToDateTime(reader["DataCriacao"]),
-                DataPagamento = reader["DataPagamento"] == System.DBNull.Value
-                    ? (DateTime?)null
-                    : DateTime.Parse(reader["DataPagamento"].ToString())
-            };
+                erros.Add(new ValidationResult("Informe um valor válido maior que zero.", new[] { "Valor" }));
+                objetoValido = false;
+            }
+
+            if (ClientePossuiDividaAberta(a.ClienteId))
+            {
+                erros.Add(new ValidationResult("Este cliente já possui uma dívida em aberto.", new[] { "ClienteId" }));
+                objetoValido = false;
+            }
+
+            foreach (var erro in erros)
+            {
+                Console.WriteLine("{0}: {1}",
+                    erro.MemberNames.First(),
+                    erro.ErrorMessage);
+            }
+
+            return objetoValido;
         }
     }
 }

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Windows.Forms;
 using VendinhaCRUD.Models;
 using VendinhaCRUD.Services;
@@ -65,13 +68,15 @@ namespace VendinhaCRUD.Forms
                 Email = txtEmail.Text.Trim()
             };
 
-            string erro = _idEdicao == 0
-                ? _clienteService.Inserir(cliente)
-                : _clienteService.Atualizar(cliente);
+            List<ValidationResult> erros;
+            bool sucesso = _idEdicao == 0
+                ? _clienteService.Criar(cliente, out erros)
+                : _clienteService.Atualizar(cliente, out erros);
 
-            if (erro != "")
+            if (!sucesso)
             {
-                MessageBox.Show(erro, "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string mensagens = string.Join("\n", erros.Select(err => err.ErrorMessage));
+                MessageBox.Show(mensagens, "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

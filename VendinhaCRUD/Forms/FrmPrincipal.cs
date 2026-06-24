@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using VendinhaCRUD.Models;
 using VendinhaCRUD.Services;
 
 namespace VendinhaCRUD.Forms
@@ -23,12 +26,25 @@ namespace VendinhaCRUD.Forms
 
         private void CarregarClientes()
         {
-            int total = _clienteService.ContarTotal(_buscaAtual);
-            int totalPaginas = Math.Max(1, (int)Math.Ceiling((double)total / PageSize));
+            List<Cliente> clientes;
+            int totalPaginas = 1;
+            int total = 0;
 
-            if (_paginaAtual > totalPaginas) _paginaAtual = totalPaginas;
+            if (string.IsNullOrWhiteSpace(_buscaAtual))
+            {
+                total = _clienteService.ContarTotal("");
+                totalPaginas = Math.Max(1, (int)Math.Ceiling((double)total / PageSize));
 
-            var clientes = _clienteService.Listar(_buscaAtual, _paginaAtual, PageSize);
+                if (_paginaAtual > totalPaginas) _paginaAtual = totalPaginas;
+
+                clientes = _clienteService.Listar(PageSize, _paginaAtual);
+            }
+            else
+            {
+                clientes = _clienteService.Pesquisa(_buscaAtual);
+                total = clientes.Count;
+                _paginaAtual = 1;
+            }
 
             dgvClientes.Rows.Clear();
 

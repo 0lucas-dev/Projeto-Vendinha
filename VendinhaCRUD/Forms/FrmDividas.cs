@@ -62,19 +62,19 @@ namespace VendinhaCRUD.Forms
             int id = ObterIdSelecionado();
             if (id == 0) return;
 
-            string status = dgvDividas.CurrentRow.Cells["colStatus"].Value.ToString();
-            if (status == "Paga")
-            {
-                MessageBox.Show("Esta dívida já está paga.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
             var resp = MessageBox.Show("Confirmar pagamento desta dívida?",
                 "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (resp == DialogResult.Yes)
             {
-                _dividaService.MarcarComoPaga(id);
+                System.Collections.Generic.List<System.ComponentModel.DataAnnotations.ValidationResult> erros;
+                bool sucesso = _dividaService.MarcarComoPaga(id, out erros);
+                if (!sucesso)
+                {
+                    string mensagens = string.Join("\n", erros.Select(err => err.ErrorMessage));
+                    MessageBox.Show(mensagens, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
                 CarregarDividas();
             }
         }

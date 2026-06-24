@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using VendinhaCRUD.Models;
 using VendinhaCRUD.Services;
@@ -20,27 +23,21 @@ namespace VendinhaCRUD.Forms
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            string textoValor = txtValor.Text.Trim().Replace(",", ".");
-
-            if (!decimal.TryParse(textoValor, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal valor))
-            {
-                MessageBox.Show("Informe um valor numérico válido.", "Validação",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtValor.Focus();
-                return;
-            }
+            string textoLimpo = (txtValor.Text ?? "").Trim().Replace(",", ".");
+            decimal.TryParse(textoLimpo, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal valor);
 
             var divida = new Divida
             {
                 ClienteId = _clienteId,
-                Valor = valor,
-                DataCriacao = DateTime.Now
+                Valor = valor
             };
 
-            string erro = _dividaService.Inserir(divida);
-            if (erro != "")
+            bool sucesso = _dividaService.Criar(divida, out List<ValidationResult> erros);
+
+            if (!sucesso)
             {
-                MessageBox.Show(erro, "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string mensagens = string.Join("\n", erros.Select(err => err.ErrorMessage));
+                MessageBox.Show(mensagens, "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

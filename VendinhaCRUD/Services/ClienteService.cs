@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SQLite;
+using System.Linq;
 using VendinhaCRUD.Data;
 using VendinhaCRUD.Models;
 
@@ -9,174 +10,197 @@ namespace VendinhaCRUD.Services
 {
     public class ClienteService
     {
-        public List<Cliente> Listar(string busca = "", int page = 1, int pageSize = 10)
+        private List<Cliente> list = new List<Cliente>();
+
+        public List<Cliente> Listar()
         {
+            var connectionString = "Data Source=vendinha.db;" +
+                "Version=3;";
+
+            var comando = "SELECT Id, Nome, CPF, DataNascimento, Email, (SELECT COALESCE(SUM(Valor), 0) FROM Dividas WHERE ClienteId = Clientes.Id AND Paga = 0) FROM Clientes ORDER BY 6 DESC";
+
+            var conexao = new SQLiteConnection(connectionString);
+            conexao.Open();
+
+            var sqlCommand = new SQLiteCommand(comando, conexao);
+
+            var leitor = sqlCommand.ExecuteReader();
+
             var lista = new List<Cliente>();
-            int offset = (page - 1) * pageSize;
-
-            string sql = @"
-                SELECT c.Id, c.Nome, c.CPF, c.DataNascimento, c.Email,
-                    COALESCE(d.Valor, 0) AS TotalDividas
-                FROM Clientes c
-                LEFT JOIN Dividas d ON d.ClienteId = c.Id AND d.Paga = 0
-                WHERE c.Nome LIKE @busca
-                ORDER BY TotalDividas DESC
-                LIMIT @pageSize OFFSET @offset";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
+            while (leitor.Read())
             {
-                cmd.Parameters.AddWithValue("@busca", $"%{busca}%");
-                cmd.Parameters.AddWithValue("@pageSize", pageSize);
-                cmd.Parameters.AddWithValue("@offset", offset);
+                var a = new Cliente();
+                a.Nome = "Teste a";
+                var b = new Cliente { Nome = "Teste a" };
 
-                using (var reader = cmd.ExecuteReader())
+                var cliente = new Cliente
                 {
-                    while (reader.Read())
-                        lista.Add(MapearCliente(reader));
-                }
+                    Id = leitor.GetInt32(0),
+                    Nome = leitor.GetString(1),
+                    CPF = leitor.GetString(2),
+                    DataNascimento = leitor.GetDateTime(3),
+                    Email = leitor.IsDBNull(4) ? null : leitor.GetString(4),
+                    TotalDividas = leitor.GetDecimal(5)
+                };
+                lista.Add(cliente);
             }
 
             return lista;
         }
 
-        public int ContarTotal(string busca = "")
-        {
-            string sql = "SELECT COUNT(*) FROM Clientes WHERE Nome LIKE @busca";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@busca", $"%{busca}%");
-                return Convert.ToInt32(cmd.ExecuteScalar());
-            }
-        }
-
         public Cliente BuscarPorId(int id)
         {
-            string sql = "SELECT *, 0 AS TotalDividas FROM Clientes WHERE Id = @id";
+            var cliente = list.FirstOrDefault(
+                (item) => item.Id == id
+            );
+            return cliente;
+        }
 
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var reader = cmd.ExecuteReader())
+        public List<Cliente> Pesquisa(string texto)
+        {
+            var resultado = list
+                .Where(
+                (item) => item.Nome.Contains(texto)
+                    || (item.Email != null && item.Email.Contains(texto))
+                    || item.CPF == texto
+                )
+                .OrderBy(item =>
                 {
-                    if (reader.Read())
-                        return MapearCliente(reader);
-                }
-            }
-            return null;
+                    return item.CPF;
+                });
+
+            return resultado.ToList();
         }
 
-        public string Inserir(Cliente cliente)
+        public List<Cliente> Listar(int pageSize, int page)
         {
-            string erro = Validar(cliente);
-            if (erro != "") return erro;
+            var take = pageSize;
+            var skip = (page - 1) * pageSize;
+            return list.Skip(skip).Take(take).ToList();
+        }
 
-            string sql = @"INSERT INTO Clientes (Nome, CPF, DataNascimento, Email) 
-                           VALUES (@nome, @cpf, @nascimento, @email)";
+        public int ContarTotal(string busca = "")
+        {
+            return string.IsNullOrEmpty(busca) ? list.Count : Pesquisa(busca).Count;
+        }
 
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
+        public bool Criar(Cliente cliente, out List<ValidationResult> erros)
+        {
+            if (!Validar(cliente, out erros))
             {
-                PreencherParametros(cmd, cliente);
-                cmd.ExecuteNonQuery();
+                return false;
             }
-            return "";
+            var connectionString = "Data Source=vendinha.db;Version=3;";
+            var comando = "INSERT INTO Clientes (Nome, CPF, DataNascimento, Email) "+
+                $"VALUES (@Nome, @CPF, @DataNascimento, @Email)";
+
+            var conexao = new SQLiteConnection(connectionString);
+            conexao.Open();
+
+            var sqlCommand = new SQLiteCommand(comando, conexao);
+
+            var p1 = sqlCommand.Parameters.Add("@CPF", System.Data.DbType.String);
+            p1.Value = cliente.CPF;
+
+            var p2 = sqlCommand.Parameters.Add("@Nome", System.Data.DbType.String);
+            p2.Value = cliente.Nome;
+
+            var p3 = sqlCommand.Parameters.Add("@DataNascimento", System.Data.DbType.DateTime);
+            p3.Value = cliente.DataNascimento;
+
+            var p4 = sqlCommand.Parameters.Add("@Email", System.Data.DbType.String);
+            p4.Value = string.IsNullOrWhiteSpace(cliente.Email) ? DBNull.Value : cliente.Email;
+
+            sqlCommand.ExecuteScalar();
+
+            return true;
         }
 
-        public string Atualizar(Cliente cliente)
+        public bool Atualizar(Cliente cliente, out List<ValidationResult> erros)
         {
-            string erro = Validar(cliente);
-            if (erro != "") return erro;
+            if (!Validar(cliente, out erros))
+            {
+                return false;
+            }
 
-            string sql = @"UPDATE Clientes 
-                           SET Nome = @nome, CPF = @cpf, DataNascimento = @nascimento, Email = @email 
+            var connectionString = "Data Source=vendinha.db;Version=3;";
+            var sql = @"UPDATE Clientes 
+                           SET Nome = @Nome, CPF = @CPF, DataNascimento = @DataNascimento, Email = @Email 
                            WHERE Id = @id";
 
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("@id", cliente.Id);
-                PreencherParametros(cmd, cliente);
-                cmd.ExecuteNonQuery();
-            }
-            return "";
+            var conexao = new SQLiteConnection(connectionString);
+            conexao.Open();
+
+            var sqlCommand = new SQLiteCommand(sql, conexao);
+
+            var pId = sqlCommand.Parameters.Add("@id", System.Data.DbType.Int32);
+            pId.Value = cliente.Id;
+
+            var p1 = sqlCommand.Parameters.Add("@Nome", System.Data.DbType.String);
+            p1.Value = cliente.Nome;
+
+            var p2 = sqlCommand.Parameters.Add("@CPF", System.Data.DbType.String);
+            p2.Value = cliente.CPF;
+
+            var p3 = sqlCommand.Parameters.Add("@DataNascimento", System.Data.DbType.DateTime);
+            p3.Value = cliente.DataNascimento;
+
+            var p4 = sqlCommand.Parameters.Add("@Email", System.Data.DbType.String);
+            p4.Value = string.IsNullOrWhiteSpace(cliente.Email) ? DBNull.Value : cliente.Email;
+
+            sqlCommand.ExecuteScalar();
+
+            return true;
         }
 
         public void Excluir(int id)
         {
-            using (var conn = DatabaseHelper.AbrirConexao())
-            {
-                using (var cmd = new SQLiteCommand("DELETE FROM Dividas WHERE ClienteId = @id", conn))
-                {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
-                }
+            var connectionString = "Data Source=vendinha.db;Version=3;";
+            var conexao = new SQLiteConnection(connectionString);
+            conexao.Open();
 
-                using (var cmd = new SQLiteCommand("DELETE FROM Clientes WHERE Id = @id", conn))
+            var sqlCommand1 = new SQLiteCommand("DELETE FROM Dividas WHERE ClienteId = @id", conexao);
+            var pId1 = sqlCommand1.Parameters.Add("@id", System.Data.DbType.Int32);
+            pId1.Value = id;
+            sqlCommand1.ExecuteScalar();
+
+            var sqlCommand2 = new SQLiteCommand("DELETE FROM Clientes WHERE Id = @id", conexao);
+            var pId2 = sqlCommand2.Parameters.Add("@id", System.Data.DbType.Int32);
+            pId2.Value = id;
+            sqlCommand2.ExecuteScalar();
+        }
+
+        public bool Validar(Cliente a, out List<ValidationResult> erros)
+        {
+            a.CPF = CpfHelper.Limpar(a.CPF);
+            var contexto = new ValidationContext(a);
+            erros = new List<ValidationResult>();
+            var objetoValido = Validator.
+                    TryValidateObject(
+                        a,
+                        contexto,
+                        erros,
+                        true
+                    );
+
+            if (!string.IsNullOrEmpty(a.CPF))
+            {
+                var codigoExistente = list.Any(item => item.CPF == a.CPF && item.Id != a.Id);
+                if (codigoExistente)
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
+                    erros.Add(new ValidationResult("Já existe outro cliente com esse CPF",
+                    new[] { "CPF" }));
+                    objetoValido = false;
                 }
             }
-        }
 
-        private bool ExisteCpf(string cpf, int ignorarId)
-        {
-            string sql = "SELECT COUNT(*) FROM Clientes WHERE CPF = @cpf AND Id != @id";
-
-            using (var conn = DatabaseHelper.AbrirConexao())
-            using (var cmd = new SQLiteCommand(sql, conn))
+            foreach (var erro in erros)
             {
-                cmd.Parameters.AddWithValue("@cpf", cpf);
-                cmd.Parameters.AddWithValue("@id", ignorarId);
-                
-                object resultadoDoBanco = cmd.ExecuteScalar();
-                int totalEncontrado = Convert.ToInt32(resultadoDoBanco);
-                return totalEncontrado > 0;
+                Console.WriteLine("{0}: {1}",
+                    erro.MemberNames.First(),
+                    erro.ErrorMessage);
             }
-        }
-
-        private string Validar(Cliente cliente)
-        {
-            cliente.CPF = CpfHelper.Limpar(cliente.CPF);
-
-            var resultados = new List<ValidationResult>();
-            var contexto = new ValidationContext(cliente);
-
-            if (!Validator.TryValidateObject(cliente, contexto, resultados, true))
-                return resultados[0].ErrorMessage;
-
-            if (!CpfHelper.Valido(cliente.CPF))
-                return "CPF inválido. Verifique o número informado.";
-
-            if (ExisteCpf(cliente.CPF, cliente.Id))
-                return "Este CPF já está cadastrado para outro cliente.";
-
-            return "";
-        }
-
-        private void PreencherParametros(SQLiteCommand cmd, Cliente cliente)
-        {
-            cmd.Parameters.AddWithValue("@nome", cliente.Nome);
-            cmd.Parameters.AddWithValue("@cpf", cliente.CPF);
-            cmd.Parameters.AddWithValue("@nascimento", cliente.DataNascimento);
-            cmd.Parameters.AddWithValue("@email", string.IsNullOrWhiteSpace(cliente.Email) ? DBNull.Value : cliente.Email);
-        }
-
-        private static Cliente MapearCliente(SQLiteDataReader reader)
-        {
-            return new Cliente
-            {
-                Id = Convert.ToInt32(reader["Id"]),
-                Nome = reader["Nome"].ToString(),
-                CPF = reader["CPF"].ToString(),
-                DataNascimento = DateTime.Parse(reader["DataNascimento"].ToString()),
-                Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : null,
-                TotalDividas = Convert.ToDecimal(reader["TotalDividas"])
-            };
+            return objetoValido;
         }
     }
 }
